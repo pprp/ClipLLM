@@ -1,4 +1,6 @@
-# Clipboard as a Bridge to AI Communication
+# ClipLLM
+
+Clipboard as a Bridge to AI Communication
 
 This repository contains the code and documentation for a project that explores the use of the clipboard as a bridge to AI communication.
 
