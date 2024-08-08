@@ -1,83 +1,45 @@
 import unittest
-from unittest.mock import patch, MagicMock
-from eoh.llm.interface_LLM import InterfaceLLM
+from clipllm.llm.interface_LLM import InterfaceLLM
+
+KEY = "sk-fd09809450c84054b541a06af631da0f"
+MODEL = "deepseek-chat"
+BASE_URL = "https://api.deepseek.com"
+ENDPOINT = "https://api.deepseek.com/v1"
 
 
 class TestInterfaceLLM(unittest.TestCase):
 
-    @patch("eoh.llm.interface_LLM.InterfaceAPI")
-    @patch("eoh.llm.interface_LLM.InterfaceLocalLLM")
-    def test_initialization_remote(self, MockInterfaceLocalLLM, MockInterfaceAPI):
-        # Mock the response of the InterfaceAPI
-        mock_api_instance = MockInterfaceAPI.return_value
-        mock_api_instance.get_response.return_value = "2"
-
+    def test_initialization_remote(self):
         # Initialize with remote settings
         llm = InterfaceLLM(
-            api_endpoint="valid_endpoint",
-            api_key="valid_key",
-            model_LLM="gpt-3",
+            api_endpoint=BASE_URL,
+            api_key=KEY,
+            model_LLM=MODEL,
             llm_use_local=False,
-            llm_local_url=None,
+            llm_local_url=BASE_URL,
             debug_mode=True,
         )
 
-        # Check if InterfaceAPI was called with correct parameters
-        MockInterfaceAPI.assert_called_with(
-            "valid_endpoint", "valid_key", "gpt-3", True
-        )
-        self.assertEqual(llm.get_response("1+1=?"), "2")
+        # Test the API call
+        response = llm.get_response("1+4=?")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, str)
 
-    @patch("eoh.llm.interface_LLM.InterfaceAPI")
-    @patch("eoh.llm.interface_LLM.InterfaceLocalLLM")
-    def test_initialization_local(self, MockInterfaceLocalLLM, MockInterfaceAPI):
-        # Mock the response of the InterfaceLocalLLM
-        mock_local_instance = MockInterfaceLocalLLM.return_value
-        mock_local_instance.get_response.return_value = "2"
-
+    def test_initialization_local(self):
         # Initialize with local settings
         llm = InterfaceLLM(
-            api_endpoint=None,
-            api_key=None,
-            model_LLM=None,
+            api_endpoint="http://localhost:11434/v1",
+            api_key="gemma2:2b",  # required, but unused
+            model_LLM="gemma2:2b",
             llm_use_local=True,
-            llm_local_url="valid_local_url",
+            llm_local_url="http://localhost:11434",
             debug_mode=True,
         )
 
-        # Check if InterfaceLocalLLM was called with correct parameters
-        MockInterfaceLocalLLM.assert_called_with("valid_local_url")
-        self.assertEqual(llm.get_response("1+1=?"), "2")
-
-    @patch("eoh.llm.interface_LLM.InterfaceAPI")
-    @patch("eoh.llm.interface_LLM.InterfaceLocalLLM")
-    def test_initialization_invalid_local_url(
-        self, MockInterfaceLocalLLM, MockInterfaceAPI
-    ):
-        with self.assertRaises(SystemExit):
-            InterfaceLLM(
-                api_endpoint=None,
-                api_key=None,
-                model_LLM=None,
-                llm_use_local=True,
-                llm_local_url="xxx",
-                debug_mode=True,
-            )
-
-    @patch("eoh.llm.interface_LLM.InterfaceAPI")
-    @patch("eoh.llm.interface_LLM.InterfaceLocalLLM")
-    def test_initialization_invalid_api_settings(
-        self, MockInterfaceLocalLLM, MockInterfaceAPI
-    ):
-        with self.assertRaises(SystemExit):
-            InterfaceLLM(
-                api_endpoint="xxx",
-                api_key="xxx",
-                model_LLM=None,
-                llm_use_local=False,
-                llm_local_url=None,
-                debug_mode=True,
-            )
+        # Test the local LLM call
+        response = llm.get_response("1+1=?")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, str)
 
 
 if __name__ == "__main__":

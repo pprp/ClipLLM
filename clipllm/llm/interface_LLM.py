@@ -42,7 +42,7 @@ class InterfaceLLM:
                 print(">> Stop with empty url for local llm !")
                 exit()
 
-            self.interface_llm = InterfaceLocalLLM(self.llm_local_url)
+            self.interface_llm = InterfaceLocalLLM(self.llm_local_url, self.api_key)
 
         else:
             print("remote llm api is used ...")
@@ -64,6 +64,8 @@ class InterfaceLLM:
                 self.model_LLM,
                 self.debug_mode,
             )
+
+        print("interface_llm: ", self.interface_llm)
 
         res = self.interface_llm.get_response("1+1=?")
 

@@ -29,15 +29,16 @@ def summarize_text(text):
         },
     ]
 
-    try:
+    # try:
+    if True:
         response = client.chat.completions.create(model="gemma2:2b", messages=messages)
 
         # Extract the summary from the response
         summary = response.choices[0].message.content
         return summary
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
+    # except Exception as e:
+    #     print(f"An error occurred: {e}")
+    #     return None
 
 
 def on_press(key):

@@ -1,0 +1,4 @@
+*.pyc
+__pycache__
+clipllm/clipllm.egg-info
+clipllm.egg-info
