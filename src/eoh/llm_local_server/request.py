@@ -3,7 +3,7 @@ import time
 import requests
 import json
 
-url = 'http://127.0.0.1:11101/completions'
+url = "http://127.0.0.1:11101/completions"
 
 while True:
     prompt = '''
@@ -29,42 +29,42 @@ def priority_v1(item: float, bins: np.ndarray) -> np.ndarray:
     """Improved version of `priority_v0`."""'''
 
     data = {
-        'prompt': prompt,
-        'repeat_prompt': 20,
-        'system_prompt': '',
-        'stream': False,
-        'params': {
-            'temperature': None,
-            'top_k': None,
-            'top_p': None,
-            'add_special_tokens': False,
-            'skip_special_tokens': True,
-        }
+        "prompt": prompt,
+        "repeat_prompt": 20,
+        "system_prompt": "",
+        "stream": False,
+        "params": {
+            "temperature": None,
+            "top_k": None,
+            "top_p": None,
+            "add_special_tokens": False,
+            "skip_special_tokens": True,
+        },
     }
 
     # inputs, max_new_tokens=512, do_sample=False, top_k=50, top_p=0.95, num_return_sequences=1, eos_token_id=32021
 
-    headers = {'Content-Type': 'application/json'}
+    headers = {"Content-Type": "application/json"}
 
     record_time = time.time()
     response = requests.post(url, data=json.dumps(data), headers=headers)
     durations = time.time() - record_time
-    print(f'time: {durations}s')
+    print(f"time: {durations}s")
 
     # def process_response_content(content: str) -> str:
     #     ret = content.split('[/INST]')[1]
     #     return ret
 
     if response.status_code == 200:
-        print(f'Query time: {durations}')
+        print(f"Query time: {durations}")
         # print(f'Response: {response.json()}')
         content = response.json()["content"]
 
         for c in content:
             # content = process_response_content(content)
-            print(f'{c}')
-            print(f'----------------------------------------------')
+            print(f"{c}")
+            print(f"----------------------------------------------")
     else:
-        print('Failed to make the POST request.')
+        print("Failed to make the POST request.")
 
     break
