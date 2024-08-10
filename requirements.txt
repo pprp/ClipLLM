@@ -1,2 +1,5 @@
 openai 
 argparse
+pyperclip
+keyboard
+pyqt5

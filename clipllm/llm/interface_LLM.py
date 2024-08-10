@@ -21,6 +21,9 @@ class InterfaceLLM:
     Methods:
         __init__: Initializes the InterfaceLLM with the provided configuration.
         get_response: Sends a prompt to the LLM and returns the response.
+        polish: Polishes the provided text using the LLM.
+        proofread: Proofreads the provided text using the LLM.
+        summarize: Summarizes the provided text using the LLM.
     """
 
     def __init__(
@@ -93,4 +96,49 @@ class InterfaceLLM:
         """
         response = self.interface_llm.get_response(prompt_content)
 
+        return response
+
+    def polish(self, text):
+        prompt = f"""Polish the following text to improve its clarity, flow, and overall quality. Follow these steps:
+        1. Correct any grammatical errors or typos.
+        2. Improve sentence structure for better readability.
+        3. Enhance vocabulary by replacing weak or repetitive words with more precise alternatives.
+        4. Ensure consistency in tone and style throughout the text.
+        5. Adjust paragraph structure if necessary for better organization of ideas.
+        6. Provide the polished version of the text.
+
+        Original text: {text}"""
+        return self.generate_response(prompt)
+
+    def proofread(self, text):
+        prompt = f"""Proofread the following text for errors and suggest improvements. Follow these steps:
+        1. Identify and correct any spelling mistakes.
+        2. Fix grammatical errors, including issues with punctuation, verb tense, and subject-verb agreement.
+        3. Check for proper capitalization and formatting.
+        4. Highlight any awkward phrasings or unclear sentences.
+        5. Suggest improvements for clarity and conciseness where appropriate.
+        6. Provide the corrected version of the text, along with a brief summary of the changes made.
+
+        Text to proofread: {text}"""
+        return self.generate_response(prompt)
+
+    def summarize(self, text):
+        prompt = f"""Summarize the following text concisely while retaining its key points. Follow these steps:
+        1. Identify the main topic or theme of the text.
+        2. Extract the most important ideas, facts, or arguments presented.
+        3. Condense the information into a brief summary, typically 1/4 to 1/3 the length of the original text.
+        4. Ensure the summary is coherent and flows logically.
+        5. Use your own words as much as possible, avoiding direct quotes unless absolutely necessary.
+        6. Provide the summarized version of the text.
+
+        Text to summarize: {text}"""
+        return self.generate_response(prompt)
+
+    def generate_response(self, prompt):
+        # This method should contain the logic to interact with your LLM
+        # and return the generated response
+        # For example:
+        response = self.interface_llm.get_response(
+            prompt
+        )  # Assuming self.llm is your LLM instance
         return response
