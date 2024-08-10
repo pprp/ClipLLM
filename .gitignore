@@ -2,3 +2,9 @@
 __pycache__
 clipllm/clipllm.egg-info
 clipllm.egg-info
+build/*
+dist/*
+ClipLLM-dmg/*
+ClipLLM.dmg
+ClipLLM.iconset/*
+.DS_Store
